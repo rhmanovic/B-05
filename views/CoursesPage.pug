@@ -1,0 +1,110 @@
+extends layout
+
+block content
+
+  //- .jumbotron.jumbotron-fluid.bg-info.text-white.mb-0
+    .container.text-sm-center.pt-lg-5
+      h1.display-5 Learn your lessons online, be in touch with your classes.
+      p.lead However your classes are difficult - we'll be assisting you.
+
+  //- - var card = 0
+    //- while card < 1
+      - card++
+      .container.clearfix.pt-4
+        .col
+          .card.cardShadow.mb-3.border-bottom.border-3
+            .row.hideMAX
+              .col
+                .d-flex.justify-content-between.border-bottom.tx-tomato
+                  i.fa.fa-angle-down.px-3.bd-highlight.my-auto.navbar-toggler.collapsed(type='button', data-toggle='collapse', data-target=`#SubCategory${card}`, aria-controls=`SubCategory${card}`, aria-expanded='false', aria-label='Toggle navigation')
+                  .p-2.bd-highlight التصنيفات
+                div.collapse(id=`SubCategory${card}`)
+                  .d-flex.flex-row-reverse.bd-highlight.border-bottom
+                    span.badge.badge-secondary.m-2.p-2 Light 1
+                    span.badge.badge-secondary.m-2.p-2 Light 2
+                    span.badge.badge-secondary.m-2.p-2 Light 3
+                    span.badge.badge-secondary.m-2.p-2 Light 4
+            .row
+              .col.border-left.pl-0.hideMIN
+                .p-2.bd-highlight.border-bottom 
+                  img.card-img-top.px-4(src='https://cdn.shopify.com/s/files/1/0437/2558/6586/products/85475439-6315-44D3-97A0-889EC00ED704_360x.jpg?v=1595300731', alt='...')
+                  h4.span12.text-center Down Lights
+                - var z = 0
+                  while z < 4
+                    - z++
+                    .p-2.bd-highlight.border-bottom= "Sub Category " + z
+              .col.col-lg-9.pl-10
+                .row.row-cols-2.row-cols-sm-3
+                  - var n = 0
+                  while n < 6
+                    - n++
+                    .col
+                      .card-body.hoverInShadow
+                        img.card-img-top(src='https://cdn.shopify.com/s/files/1/0437/2558/6586/products/85475439-6315-44D3-97A0-889EC00ED704_360x.jpg?v=1595300731', alt='...')
+                        h6.card-subtitle.mb-2.text-muted Product Title
+                        span.card-text.text-secondary 0.95 K.D
+                        a.stretched-link(href=`/`)
+    
+    
+  - var card = 0
+  
+  each course,index in courseData
+    if course.parent == 0
+      //- - console.log(course.parent+"    index: " +index)
+      - card++
+      - var subchaptersArray =[]
+      .container.clearfix.pt-4
+        .col
+          .card.cardShadow.mb-3.border-bottom.border-3
+            .row.hideMAX
+              .col
+                .d-flex.justify-content-between.border-bottom.tx-tomato
+                  i.fa.fa-angle-down.px-3.bd-highlight.my-auto.navbar-toggler.collapsed(type='button', data-toggle='collapse', data-target=`#SubCategory${card}`, aria-controls=`SubCategory${card}`, aria-expanded='false', aria-label='Toggle navigation')
+                  .p-2.bd-highlight= course.name
+                div.collapse(id=`SubCategory${card}`)
+                  .d-flex.flex-row-reverse.bd-highlight.border-bottom
+                    each subcourse,index in courseData
+                      
+                      a(href='/'+course._id)
+                        
+                        if subcourse.parent != "0" && course._id == subcourse.parent
+                          span.badge.badge-secondary.m-2.p-2= subcourse.name
+                          - subchaptersArray.push(subcourse._id)
+                          //- - console.log('x____'+subchaptersArray)
+                    
+            .row
+              .col.border-left.pl-0.hideMIN
+                a(href=`products/${course._id}`)
+                  .p-2.bd-highlight.border-bottom
+                    img.card-img-top.px-4(src='https://cdn.shopify.com/s/files/1/0437/2558/6586/products/85475439-6315-44D3-97A0-889EC00ED704_360x.jpg?v=1595300731', alt='...')
+                    h4.span12.text-center= course.name
+                each subcourse,index in courseData
+                  a(href='/'+course._id)
+                    if subcourse.parent != "0" && course._id == subcourse.parent
+                      .p-2.bd-highlight.border-bottom.text-right= subcourse.name
+              .col.col-lg-9.pl-10
+                .row.row-cols-2.row-cols-sm-3
+                  //- - var n = 0
+                  //- while n < 6
+                    - n++
+                    .col
+                      .card-body.hoverInShadow
+                        img.card-img-top(src='https://cdn.shopify.com/s/files/1/0437/2558/6586/products/85475439-6315-44D3-97A0-889EC00ED704_360x.jpg?v=1595300731', alt='...')
+                        h6.card-subtitle.mb-2.text-muted Product Title
+                        span.card-text.text-secondary 0.95 K.D
+                        a.stretched-link(href=`/`)
+                  
+                  //- - console.log('Sub Category in this card: '+subchaptersArray)
+                  each chapter,index in chapterData
+                    //- - console.log(chapter.courseID)
+                    each subchapters in subchaptersArray
+                      if subchapters == chapter.courseID
+                        .col
+                          .card-body.hoverInShadow
+                            span.image-wrap
+                              img.card-img-top.lazyload(data-src=chapter.sectionsLinks[0] || "images/fff.png" onerror="this.onerror=null; this.src='images/fff.png'")
+                            //- img.card-img-top.lazyload(src="images/c9c9c9.png")
+                            h6.card-subtitle.mb-2.mt-1.text-muted.text-center= chapter.name
+                            h6.card-text.text-secondary.tx-tomato.m-0.ltr.text-center= `${chapter.price} K.D`
+                            a.stretched-link(href=`product/${chapter._id}`)
+

@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  .main.container.ltr
+    .row
+      .col
+        h1.display-4.m-b-2 Add Category
+        p Here where you should add Category
+
+        // register form
+        form(method='POST' action='/admin/Addcourse2' id="courseForm")
+          div.form-group
+            label Category Name:
+            input#name.form-control(type='text', placeholder='Down Light' name='course')
+            //- input#name.form-control.mt-2(type='text', value='0' name='id')
+            br
+            label Select Parent Chapter Id if any
+            br
+            select(name='parent' form="courseForm")
+              option(value= "0") No Parent
+              each parent,index in parents
+                if parent.parent == 0
+                  option(value= parent._id)= parent.name
+               
+           
+
+          button.btn.btn-primary(type='submit') Submit  
+
+          //- script(type='text/javascript').
+          //-   function teacherName(name) {
+          //-     iparentId.value = name
+          //-   }      
+
+          
+
+

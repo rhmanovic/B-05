@@ -1,0 +1,10 @@
+
+block content
+  .container.clearfix
+    form(method='POST' action='/admin/editVendor')
+      input(type="hidden" name="chapterId" value= chapterId)
+      div.form-group
+        label(for='course') vendor:
+        input#name.form-control(type='float', placeholder='VoltaPlus' name='vendor')
+      button.btn.btn-primary(type='submit') Submit
+      span.appearText(type='button' onclick="this.parentElement.style.display = 'none'") cancel

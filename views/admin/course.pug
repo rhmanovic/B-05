@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  .main.container.clearfix.ltr
+    .row
+      .col-md-offset-2
+        h1 Categories
+        a.nav-item.nav-link(href='/admin/AddCourse2') Creat New Category
+        ul
+          each val,index in data
+            a(href='/admin/course2/'+val._id)
+              if val.parent == "0"
+                li= val.name
+                  ul
+                    each val2,index in data
+                      a(href='/admin/course2/'+val2._id)
+                        if val2.parent != "0" && val._id == val2.parent
+                          li= val2.name
+            // ul
+              each chapter,index in val.chapters
+                li= chapter
+                  a(href='/admin/EditChapter/'+val._id+'?side='+index)
+                    i.far.fa-edit
+
+
