@@ -8,6 +8,7 @@ const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
 var multer = require('multer');
 const keys = require('./config/keys');
+const PORT = process.env.PORT || 5000
 
 var routes = require('./routes/index');
 var privates = require('./privates/index');
@@ -116,9 +117,7 @@ app.use(function(err, req, res, next) {
 });
 
 // listen on port 5000
-app.listen(3000, function () {
-  console.log('Express app listening on port 3000');
-});
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 
 app.use(function(err, req, res, next) {

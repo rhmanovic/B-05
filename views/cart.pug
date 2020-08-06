@@ -46,8 +46,8 @@ block content
                                                         //-         i.ml-1.fa.fa-trash(aria-hidden='true')
                                                         //-         | إزاله
                                                         .container.hight100
-                                                            .row.row-cols-2.row-cols-md-1.hight100
-                                                                .col.mt-auto
+                                                            .d-flex.flex-column.bd-highlight.mb-3
+                                                                .p-2.bd-highlight
                                                                     span.small-font= `الكمية:`
                                                                     div
                                                                         label.sr-only(for='inlineFormInputGroup')
@@ -59,14 +59,14 @@ block content
                                                                                 button.btn.btn-danger.btn-number.tomato(type='button', data-type='plus', data-field=`quantity${index}`)
                                                                                     i.fa.fa-plus(aria-hidden='true')
                                                                     
-                                                                .col.mt-2
+                                                                .p-2.bd-highlight
                                                                     h6.small-font= `سعر الحبة: ${product.price} K.D`
-                                                                .col
+                                                                .p-2.bd-highlight
                                                                     span.small-font= `الاجمالي:`
                                                                     span.small-font= ` K.D `
                                                                     span.small-font(id =`R${product._id}`)= ((product.price*1000) * cartData2[index].Quantity)/1000
                                                                     - totalPrice += ((product.price*1000) * cartData2[index].Quantity)/1000
-                                                                .col.hideMAX.text-muted.small2-font.my-2
+                                                                .p-2.bd-highlight.hideMAX.text-muted.small2-font
                                                                     button.btn.btn-light.btn-sm(value=`${product._id}`, class="remove")
                                                                         i.ml-1.fa.fa-trash(aria-hidden='true')
                                                                         | إزاله
