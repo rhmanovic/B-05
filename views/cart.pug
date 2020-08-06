@@ -87,23 +87,18 @@ block content
                                 .col.text-left.ltr= `${shippingPrice} K.D`
                                 
                             hr.mx-3
-                            .row
-                                .col المجموع
-                                .col.text-left.ltr
-                                    span(id="totalPrice")=`${shippingPrice + totalPrice}`
-                                    span=` K.D`
-                            hr.mx-3
                             form(method='POST' action='/pay')
                                 .d-flex.flex-column.bd-highlight.mb-3
                                     .pt-2.bd-highlight الاسم:
-                                    input.p-1.bd-highlight(placeholder="الاسم الكامل" type='text' id='name' name='name' oninvalid="this.setCustomValidity('ضع اسم صحيح')" oninput="setCustomValidity('')")
+                                    input.p-1.bd-highlight(placeholder="الاسم الكامل" type='text' id='name' name='name' required="required" oninvalid="this.setCustomValidity('ضع اسم صحيح')" oninput="setCustomValidity('')")
                                     .pt-2.bd-highlight رقم الهاتف:
+
                                     input.p-1.bd-highlight.input-number(placeholder="رقم الهاتف" type='tel' id='mobile' name='mobile' required="required" oninvalid="this.setCustomValidity('ضع هاتف صحيح')" oninput="setCustomValidity('')")
-                                    .pt-2.bd-highlight الايميل:
+                                    .pt-2.bd-highlight الايميل (اختياري):
                                     input.p-1.bd-highlight(placeholder="example@example.com" type='text' id='email' name='email')
                                     .pt-2.bd-highlight العنوان:
-                                    name='address' required="required" oninvalid="this.setCustomValidity('ضع عنوان صحيح')" oninput="setCustomValidity('')")
-                                    
+                                    textarea.p-1.bd-highlight(placeholder="العنوان الكامل" type='text' id='address' name='address' required="required" oninvalid="this.setCustomValidity('ضع عنوان صحيح')" oninput="setCustomValidity('')")
+
                                     button.btn.btn-primary.col.mt-4.mb-2(type='submit') ادفع الان
 
 
