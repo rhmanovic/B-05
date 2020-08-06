@@ -6,114 +6,115 @@ block content
     // Page Container
     if cartData.length > 0
         .container.text-right.my-3
-            .row.row-cols-1.row-cols-md-2.m-2.m-md-0
-                // List Col
-                .col.col-md-8.p-0
-                    h3.mb-4 عربة التسوق
-                    // Product Container
-                    .card.cardShadow
-                        each product,index in cartData
-                            div(id=`div${product._id}`)
-                                .container-fluid.p-0.border
-                                    .row.row-cols-2.m-0
-                                        // Product image
-                                        .col-3.pt-3.pt-md-0
-                                            span.image-wrap
-                                                img.p-md-3.card-img-top.lazyload(data-src=product.sectionsLinks[0] || "images/fff.png" onerror="this.onerror=null; this.src='images/fff.png'")
-                                        // Product name & Price
-                                        .col-9.p-0
-                                            .container-fluid.p-0.pt-2.hight100
-                                                .row.row-cols-1.m-0.hight100
-                                                    .col-md-8.d-flex.flex-column
-                                                        .bd-highlight.my-2
-                                                            a(href=`/product/${product._id}`)
-                                                                h6= product.name
-                                                        .bd-highlight.mt-auto
-                                                            p.hideMIN.small2-font.text-muted
-                                                                button.btn.btn-light.btn-sm.small2-font.text-black-50(value=`${product._id}`, class="remove")
-                                                                    i.ml-1.fa.fa-trash(aria-hidden='true')
-                                                                    | إزاله
-                                                    .col-md-4.d-flex.flex-column.p-0
-                                                        //- .bd-highlight
-                                                        //-     h6.ltr= `${product.price} K.D`
-                                                        //- .bd-highlight.mt-auto.m-0
-                                                        //-     span= `الكمية ${cartData2[index].Quantity}`
-                                                        //- .bd-highlight
-                                                        //-     span
-                                                        //-         small= `الاجمالي ${product.price* cartData2[index].Quantity} K.D`
-                                                        //- .bd-highlight.mt-auto.m-0.hideMAX
-                                                        //-     span.text-right
-                                                        //-         i.ml-1.fa.fa-trash(aria-hidden='true')
-                                                        //-         | إزاله
-                                                        .container.hight100
-                                                            .d-flex.flex-column.bd-highlight.mb-3
-                                                                .p-2.bd-highlight
-                                                                    span.small-font= `الكمية:`
-                                                                    div
-                                                                        label.sr-only(for='inlineFormInputGroup')
-                                                                        .input-group.my-2
-                                                                            .input-group-prepend
-                                                                                button.btn.btn-light.btn-number.border(type='button', data-type='minus', data-field=`quantity${index}`)
-                                                                                    i.fa.fa-minus(aria-hidden='true')
-                                                                                input.form-control.col.text-center.btn-number.input-number(type='text', id=`${product._id}`, name=`quantity${index}`, value=`${cartData2[index].Quantity}`, min='0', max='1000' onchange=`Quantitychange("${product._id}")`)
-                                                                                button.btn.btn-danger.btn-number.tomato(type='button', data-type='plus', data-field=`quantity${index}`)
-                                                                                    i.fa.fa-plus(aria-hidden='true')
-                                                                    
-                                                                .p-2.bd-highlight
-                                                                    h6.small-font= `سعر الحبة: ${product.price} K.D`
-                                                                .p-2.bd-highlight
-                                                                    span.small-font= `الاجمالي:`
-                                                                    span.small-font= ` K.D `
-                                                                    span.small-font(id =`R${product._id}`)= ((product.price*1000) * cartData2[index].Quantity)/1000
-                                                                    - totalPrice += ((product.price*1000) * cartData2[index].Quantity)/1000
-                                                                .p-2.bd-highlight.hideMAX.text-muted.small2-font
-                                                                    button.btn.btn-light.btn-sm(value=`${product._id}`, class="remove")
-                                                                        i.ml-1.fa.fa-trash(aria-hidden='true')
-                                                                        | إزاله
+        .row.row-cols-1.row-cols-md-2.m-2.m-md-0
+        // List Col
+        .col.col-md-8.p-0
+        h3.mb-4 عربة التسوق
+        // Product Container
+        .card.cardShadow
+            each product,index in cartData
+            div(id=`div${product._id}`)
+            .container-fluid.p-0.border
+            .row.row-cols-2.m-0
+                // Product image
+                .col-3.pt-3.pt-md-0
+                span.image-wrap
+                img.p-md-3.card-img-top.lazyload(data-src=product.sectionsLinks[0] || "images/fff.png" onerror="this.onerror=null; this.src='images/fff.png'")
+                // Product name & Price
+                .col-9.p-0
+                .container-fluid.p-0.pt-2.hight100
+                .row.row-cols-1.m-0.hight100
+                .col-md-8.d-flex.flex-column
+                    .bd-highlight.my-2
+                    a(href=`/product/${product._id}`)
+                    h6= product.name
+                    .bd-highlight.mt-auto
+                    p.hideMIN.small2-font.text-muted
+                    button.btn.btn-light.btn-sm.small2-font.text-black-50(value=`${product._id}`, class="remove")
+                    i.ml-1.fa.fa-trash(aria-hidden='true')
+                    | إزاله
+                .col-md-4.d-flex.flex-column.p-0
+                    //- .bd-highlight
+                    //-  h6.ltr= `${product.price} K.D`
+                    //- .bd-highlight.mt-auto.m-0
+                    //-  span= `الكمية ${cartData2[index].Quantity}`
+                    //- .bd-highlight
+                    //-  span
+                    //-   small= `الاجمالي ${product.price* cartData2[index].Quantity} K.D`
+                    //- .bd-highlight.mt-auto.m-0.hideMAX
+                    //-  span.text-right
+                    //-   i.ml-1.fa.fa-trash(aria-hidden='true')
+                    //-   | إزاله
+                    .container.hight100
+                    .d-flex.flex-column.bd-highlight.mb-3
+                        .bd-highlight
+                            h6.small-font= `سعر الحبة: ${product.price} K.D`
+                        .bd-highlight
+                            span.small-font= `الكمية:`
+                            div
+                                label.sr-only(for='inlineFormInputGroup')
+                                .input-group.my-2
+                                    .col.p-0.input-group-prepend
+                                        button.btn.btn-light.btn-number.border(type='button', data-type='minus', data-field=`quantity${index}`)
+                                            i.fa.fa-minus(aria-hidden='true')
+                                        input.form-control.col.text-center.btn-number.input-number(type='text', id=`${product._id}`, name=`quantity${index}`, value=`${cartData2[index].Quantity}`, min='0', max='1000' onchange=`Quantitychange("${product._id}")`)
+                                        button.btn.btn-danger.btn-number.tomato(type='button', data-type='plus', data-field=`quantity${index}`)
+                                            i.fa.fa-plus(aria-hidden='true')
+                            
+                        
+                        .bd-highlight
+                            span.small-font= `الاجمالي:`
+                            span.small-font= ` K.D `
+                            span.small-font(id =`R${product._id}`)= ((product.price*1000) * cartData2[index].Quantity)/1000
+                            - totalPrice += ((product.price*1000) * cartData2[index].Quantity)/1000
+                        .bd-highlight.hideMAX.text-muted.small2-font.text-left
+                            button.btn.btn-light.btn-sm(value=`${product._id}`, class="remove")
+                                i.ml-1.fa.fa-trash(aria-hidden='true')
+                                | إزاله
+                
+        .col.col-md-4.p-0
+        .card.cardShadow.mr-md-2.mt-2.mt-md-0
+            h4.mr-3.mt-2 ملخص الطلبية
+            hr.mx-3
+            .container
+            .row
+            .col الاجمالي
+            .col.text-left.ltr
+            span(id="subTotalPrice")= totalPrice
+            span= " K.D"
+            .row
+            .col الشحن
+            .col.text-left.ltr= `${shippingPrice} K.D`
+            
+            hr.mx-3
+            .row
+            .col المجموع
+            .col.text-left.ltr
+            span(id="totalPrice")=`${shippingPrice + totalPrice}`
+            span=` K.D`
+            hr.mx-3
+            form(method='POST' action='/pay')
+            .d-flex.flex-column.bd-highlight.mb-3
+            .pt-2.bd-highlight الاسم:
+            input.p-1.bd-highlight(placeholder="الاسم الكامل" type='text' id='name' name='name' required="required" oninvalid="this.setCustomValidity('ضع اسم صحيح')" oninput="setCustomValidity('')")
+            .pt-2.bd-highlight رقم الهاتف:
+            
+            input.p-1.bd-highlight.input-number(placeholder="رقم الهاتف" type='tel' id='mobile' name='mobile' required="required" oninvalid="this.setCustomValidity('ضع هاتف صحيح')" oninput="setCustomValidity('')")
+            .pt-2.bd-highlight الايميل (اختياري):
+            input.p-1.bd-highlight(placeholder="example@example.com" type='text' id='email' name='email')
+            .pt-2.bd-highlight العنوان:
+            textarea.p-1.bd-highlight(placeholder="العنوان الكامل" type='text' id='address' name='address' required="required" oninvalid="this.setCustomValidity('ضع عنوان صحيح')" oninput="setCustomValidity('')")
+            
+            button.btn.btn-primary.col.mt-4.mb-2(type='submit') ادفع الان
 
-                                            
-                .col.col-md-4.p-0
-                    .card.cardShadow.mr-md-2.mt-2.mt-md-0
-                        h4.mr-3.mt-2 ملخص الطلبية
-                        hr.mx-3
-                        .container
-                            .row
-                                .col الاجمالي
-                                .col.text-left.ltr
-                                    span(id="subTotalPrice")= totalPrice
-                                    span= " K.D"
-                            .row
-                                .col الشحن
-                                .col.text-left.ltr= `${shippingPrice} K.D`
-                                
-                            hr.mx-3
-                            .row
-                                .col المجموع
-                                .col.text-left.ltr
-                                    span(id="totalPrice")=`${shippingPrice + totalPrice}`
-                                    span=` K.D`
-                            hr.mx-3
-                            form(method='POST' action='/pay')
-                                .d-flex.flex-column.bd-highlight.mb-3
-                                    .pt-2.bd-highlight الاسم:
-                                    input.p-1.bd-highlight(placeholder="الاسم الكامل" type='text' id='name' name='name')
-                                    .pt-2.bd-highlight رقم الهاتف:
-                                    input.p-1.bd-highlight.input-number(placeholder="رقم الهاتف" min="0" max="999999999" type='text' id='mobile' name='mobile')
-                                    .pt-2.bd-highlight الايميل:
-                                    input.p-1.bd-highlight(placeholder="example@example.com" type='text' id='email' name='email')
-                                    .pt-2.bd-highlight العنوان:
-                                    textarea.p-1.bd-highlight(placeholder="العنوان الكامل" type='text' id='address' name='address')
-                                
-                                    button.btn.btn-primary.col.mt-4.mb-2(type='submit') ادفع الان
 
-
-    else
-        .container.text-right.my-3.hight100
-            .col.p-0.hight100
-                .card.cardShadow.hight100
-                    h3.text-center.my-auto عربة التسوق فارغة
-    
+  else
+    .container.text-right.my-3.hight100
+        .col.p-0.hight100
+            .card.cardShadow.hight100
+                h3.text-center.my-auto عربة التسوق فارغة
+ 
+ 
+  
    
-        
-           
 

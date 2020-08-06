@@ -68,10 +68,11 @@ router.get('/cart', function(req, res, next) {
 
   var cartIDs = [];
   var cartData = req.session.cartData0;
+  if (cartData) {
   cartData.forEach(function(product, index, array) {
     cartIDs.push(product.ID);
   });
-
+  }
   Chapter.find( { _id : { $in : cartIDs } } ).exec(function (error, productData){
     // console.log(cartIDs)
     // console.log(productData)
@@ -109,6 +110,7 @@ router.post('/cart', function(req, res, next) {
 
   if (!req.session.cartData0){
     req.session.cartData0 = []
+    var old = req.session.cartData0;
   } else {
 
     var old = req.session.cartData0;
@@ -339,7 +341,8 @@ router.get('/redirect2', function(req,res,next){
   var options = { method: 'GET',
     url: `https://api.tap.company/v2/charges/${tap_id}`,
     headers: { authorization: 'Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ' },
-    body: '{}' };
+    body: '{}'
+  };
 
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
@@ -348,23 +351,25 @@ router.get('/redirect2', function(req,res,next){
     // console.log(body);
     
     const status = bodyJSON.response.message
-    // const courseName = bodyJSON.metadata.courseName
-    // const chapterName = bodyJSON.metadata.chapterName
-    // const courseId = bodyJSON.metadata.courseId
-    // const price = bodyJSON.metadata.price
     console.log(`_Redirect2 _______________________________`)
     console.log(`   - Charge Id=${bodyJSON.id}`)
     console.log(`   - status = ${status}`)
     console.log(`   - MetaData = ${JSON.stringify(bodyJSON.metadata)}`)
-    // console.log(`   - Chapter Name="${chapterName}"`)
-    // console.log(`   - Price =${price} KD`)
+    
     
     console.log(`__________________________________________`)
-    // console.log(`   - response =${bodyJSON.response}`)
+
     
 
+    Charge.findOne({_id: bodyJSON.metadata.ChargeID}).exec(function (error, chargeData){
+    if (error){
+      // console.log(error.name);
+      return next(error);
+    } else {
+      return res.render('redirect', { title: 'Payment Statment' ,status:status, courseName:"courseName", chapterName:"chapterName", price:chargeData.TotalPrice, courseId:"courseId"});
+    }
+  });
 
-    // return res.render('redirect', { title: 'Payment Statment', status:status, courseName:courseName, chapterName:chapterName, status:status, price:price, courseId:courseId})
   });
 
 });
@@ -418,34 +423,59 @@ router.post('/pay',async function(req, res1, next) {
       }
       return next(error);
     } else {
-      var dataToPay =[];
-      var metadata = {}
+      var ProductIDs = [];
+      var Quantity = [];
+      var Price = [];
+      var Name = [];
       for (var i = 0; i < productData.length; i++) {
         if (productData[i]._id == cartData[i].ID){
-          metadata[productData[i]._id]=cartData[i].Quantity;
-          var passToArray = {
-            "_id": productData[i]._id,
-            "name": productData[i].name,
-            "price": productData[i].price,
-            "quantity": cartData[i].Quantity
-          }
+
+          ProductIDs.push(productData[i]._id);
+          Quantity.push(parseInt(cartData[i].Quantity));
+          Price.push(productData[i].price);
+          Name.push(productData[i].name);
+
           totalPrice += productData[i].price*1000 * cartData[i].Quantity/1000;
-          dataToPay.push(passToArray)
+          
         } else {
           var err = new Error('Error E0001');
           err.status = 404;
           next(err);
         }
       }
-      // console.log("metadata: "+ JSON.stringify(metadata));
+
+      chargeData ={
+        ProductIDs: ProductIDs,
+        Quantity: Quantity,
+        Price: Price,
+        Name: Name,
+        CustomerID : userData.userId,
+        CustomerName : userData.name,
+        TotalPrice : totalPrice, 
+        Email : userData.email ? userData.email : 'none@none.none', 
+        Mobile : userData.mobile, 
+        Address : userData.address, 
+        Status : "onProgress"
+      }
+
+      
+      console.log("chargeData: "+ JSON.stringify(chargeData));
+      console.log("chargeData: "+ chargeData);
+      console.log("TotalPrice: "+ chargeData.TotalPrice);
       
       
-      payforThis(dataToPay, userData, totalPrice);
+      // payforThis(chargeData, userData, totalPrice);
+      Charge.create(chargeData, function (error, ChargeResult) {
+        if (error) {
+          console.log(error.code);
+        } else {
+          console.log("ChargeResult: "+ JSON.stringify(ChargeResult));
+          payforThis(ChargeResult, userData, totalPrice);
+        }
+      });
   }})
 
-  // payforThis("ChaptersData", "req.session.email", "req.session.userId")
-
-  function payforThis(dataToPay, userData, totalPrice){
+  function payforThis(ChargeResult, userData, totalPrice){
     var options = {
       "method": "POST",
       "hostname": "api.tap.company",
@@ -482,7 +512,7 @@ router.post('/pay',async function(req, res1, next) {
     });
 
     req.write(JSON.stringify({
-      amount: totalPrice,
+      amount: ChargeResult.TotalPrice,
       currency: 'KWD',
       threeDSecure: true,
       save_card: false,
@@ -490,16 +520,18 @@ router.post('/pay',async function(req, res1, next) {
       statement_descriptor: "pay for products",
 
 
-      metadata: dataToPay,
+      metadata: {
+        ChargeID: ChargeResult._id
+      },
 
       reference: { transaction: 'txn_0001', order: 'ord_0001' },
       receipt: { email: false, sms: true },
       customer: 
-      { first_name: userData.name,
+      { first_name: ChargeResult.CustomerName,
         middle_name: "userId",
         last_name: 'test',
-        email: userData.email,
-        phone: { country_code: '965', number: userData.mobile } },
+        email: ChargeResult.Email ,
+        phone: { country_code: '965', number: ChargeResult.Mobile } },
       source: { id: 'src_kw.knet' },
       post: { url: `https://${host}/getPay` },
       redirect: { url: `https://${host}/redirect2` } }));
